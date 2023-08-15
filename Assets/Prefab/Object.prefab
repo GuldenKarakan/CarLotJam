@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 4284199645275923702}
   - component: {fileID: 926425913376746323}
   - component: {fileID: 3116390046372552601}
+  - component: {fileID: 8818060112448234978}
+  - component: {fileID: 1334034283555325100}
   m_Layer: 0
   m_Name: zemin
   m_TagString: Untagged
@@ -61,8 +63,8 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -6922793697723135513, guid: 05ad3113b1578ba4995e166ac828f275, type: 3}
-  - {fileID: -3522955778539423533, guid: 05ad3113b1578ba4995e166ac828f275, type: 3}
+  - {fileID: 2100000, guid: 4304078a8199fae44ac24c874682e1e5, type: 2}
+  - {fileID: 2100000, guid: f5a8e1b9883f83f49a1e2c3d8eb28293, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -84,6 +86,31 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &8818060112448234978
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3476594522559282764}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.7665688, y: 0.120994166, z: 1.7665688}
+  m_Center: {x: 0, y: -0.03219939, z: 0}
+--- !u!114 &1334034283555325100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3476594522559282764}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55125c6028f36c648a8905b84752a5a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8521335650406461063
 GameObject:
   m_ObjectHideFlags: 0
