@@ -7,15 +7,6 @@ public class GridPoint : MonoBehaviour
     private Color originalColor;
     private GridManager gridManager;
 
-    private bool isOccupied = false;
-    private GameObject occupyingObject; // Ýþgal eden obje
-    private bool isBlocked = false; // Engellenmiþ mi?
-
-    public bool IsBlocked
-    {
-        get { return isBlocked; }
-    }
-
     private void Start()
     {
         gridManager = transform.parent.parent.GetComponent<GridManager>();
@@ -24,11 +15,12 @@ public class GridPoint : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (!gridManager.isChangingColor && !isOccupied) // Renk deðiþimi devam etmiyorsa ve iþgal edilmemiþse
+        if (!gridManager.isChangingColor) // Renk deðiþimi devam etmiyorsa ve iþgal edilmemiþse
         {
             gridManager.isChangingColor = true; // Renk deðiþimi baþladý
+            gridManager.clickedGrid = transform;
             // A* algoritmasýný burada kullanarak yolun varlýðýný kontrol edin
-            bool hasPath = CheckPathAvailability(); // Bu kýsmý kendi A* algoritmanýza göre düzenlemelisiniz
+            bool hasPath = gridManager.CheckPathAvailability(); // Bu kýsmý kendi A* algoritmanýza göre düzenlemelisiniz
 
             if (hasPath)
             {
@@ -57,15 +49,5 @@ public class GridPoint : MonoBehaviour
     private void ChangeColor(Color color)
     {
         GetComponent<Renderer>().material.color = color;
-    }
-
-    // A* algoritmasýný kullanarak yolun varlýðýný kontrol edin
-    private bool CheckPathAvailability()
-    {
-        // Burada A* algoritmasýna göre yolun varlýðýný kontrol edin
-        // Eðer yol varsa true, yoksa false döndürün
-        // Örnek bir kontrol yapýsý:
-        // return Random.Range(0, 2) == 0; // Rastgele true veya false döndürür
-        return false; // Örnek olarak her zaman true döndürüyoruz
     }
 }

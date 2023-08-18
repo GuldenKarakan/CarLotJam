@@ -5,6 +5,8 @@ using UnityEngine;
 public class GridManager : MonoBehaviour
 {
     [HideInInspector] public bool isChangingColor = false;
+    [HideInInspector] public Transform clickedGrid;
+    public Transform characterGrid;
     public GameObject gridPointPrefab; // Izgara noktasý için prefab
 
     public int gridSizeX = 5; // Izgara boyutu X
@@ -14,8 +16,7 @@ public class GridManager : MonoBehaviour
     private List<GameObject> gridPoints = new List<GameObject>();
     private void Start()
     {
-        for (int i = 0; i < transform.childCount; i++)
-            gridPoints.Add(transform.GetChild(i).gameObject);
+        gridPoints = new List<GameObject>(GetComponentsInChildren<GameObject>());
     }
 
     [ContextMenu("Create Grid")]
@@ -27,7 +28,7 @@ public class GridManager : MonoBehaviour
             for (int z = 0; z < gridSizeZ; z++)
             {
                 Vector3 newPosition = spawnPosition + new Vector3(x * spacing, 0, z * spacing);
-                GameObject gridPointGO = Instantiate(gridPointPrefab, newPosition, Quaternion.identity, transform);
+                Instantiate(gridPointPrefab, newPosition, Quaternion.identity, transform);
             }
         }
     }
@@ -37,6 +38,13 @@ public class GridManager : MonoBehaviour
     {
         for (int i = transform.childCount; i > 0; i--)
             DestroyImmediate(transform.GetChild(0).gameObject);
+    }
+
+    // A* algoritmasýný kullanarak yolun varlýðýný kontrol edin
+    public bool CheckPathAvailability()
+    {
+
+        return false;
     }
 
     // Gizmos'u kullanarak oluþturulan grid'i editor üzerinde çizer
