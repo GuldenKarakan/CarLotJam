@@ -18,11 +18,12 @@ public class Grids : MonoBehaviour
 
     private void Awake()
     {
-        //gridWorldSize = new Vector2(gridAxisX, gridAxisY) * 2;
-        //nodeDiameter = nodeRadius * 2;
-        //gridSizeX = Mathf.RoundToInt(gridWorldSize.x / nodeDiameter);
-        //gridSizeY = Mathf.RoundToInt(gridWorldSize.y / nodeDiameter);
         CreatGrid();
+    }
+    private void Update()
+    {
+        if (Input.GetKey("a"))
+            CreatGrid();
     }
 
     public int MaxSize
@@ -34,19 +35,32 @@ public class Grids : MonoBehaviour
     [ContextMenu("Creat Grid")]
     private void CreatGrid()
     {
+        // Ýzgaranýn dünya boyutlarýný hesapla
         gridWorldSize = new Vector2(gridAxisX, gridAxisY) * 2;
         nodeDiameter = nodeRadius * 2;
+
+        // Izgara boyutlarýný düðüm çapýna göre hesapla
         gridSizeX = Mathf.RoundToInt(gridWorldSize.x / nodeDiameter);
         gridSizeY = Mathf.RoundToInt(gridWorldSize.y / nodeDiameter);
 
+        // Izgara düðümleri dizisini oluþtur
         grid = new Node[gridSizeX, gridSizeY];
+
+        // Izgaranýn sol alt köþesini hesapla
         Vector3 worldBottomLeft = transform.position - Vector3.right * gridWorldSize.x / 2 - Vector3.forward * gridWorldSize.y / 2;
+
+        // Her bir düðümü oluþtur ve düðümün yürünülebilirlik durumunu kontrol et
         for (int i = 0; i < gridSizeX; i++)
         {
             for (int j = 0; j < gridSizeY; j++)
             {
+                // Düðümün dünya konumunu hesapla
                 Vector3 worldPoint = worldBottomLeft + Vector3.right * (i * nodeDiameter + nodeRadius) + Vector3.forward * (j * nodeDiameter + nodeRadius);
+
+                // Düðümün üzerinde engel var mý kontrol et
                 bool walkable = !(Physics.CheckSphere(worldPoint, nodeRadius, unwalkableMask));
+
+                // Düðümü oluþtur ve izgara dizisine ekle
                 grid[i, j] = new Node(walkable, worldPoint, i, j);
                 Instantiate(gridObject, worldPoint, Quaternion.identity, transform);
 
@@ -57,6 +71,7 @@ public class Grids : MonoBehaviour
     [ContextMenu("Clear Grid")]
     private void ClearGrid()
     {
+        // Oluþturulan Gridleri editorden temizler
         for (int i = transform.childCount; i > 0; i--)
             DestroyImmediate(transform.GetChild(0).gameObject);
     }
@@ -64,6 +79,8 @@ public class Grids : MonoBehaviour
     {
         List<Node> neighbours = new List<Node>();
 
+
+        // Düðümün etrafýndaki komþularý dolaþ
         for (int x = -1; x <= 1; x++)
         {
             for (int y = -1; y <= 1; y++)
@@ -71,11 +88,14 @@ public class Grids : MonoBehaviour
                 if (x == 0 && y == 0)
                     continue;
 
+                // Komþu düðümün dizinlerini hesapla
                 int checkX = node.gridX + x;
                 int checkY = node.gridY + y;
 
-                if(checkX >= 0 && checkX < gridSizeX && checkY >= 0 && checkY < gridSizeY)
+                // Dizinler izgara sýnýrlarýnda mý kontrol et
+                if (checkX >= 0 && checkX < gridSizeX && checkY >= 0 && checkY < gridSizeY)
                 {
+                    // Komþu düðümü komþular listesine ekle
                     neighbours.Add(grid[checkX, checkY]);
                 }
             }
@@ -87,13 +107,17 @@ public class Grids : MonoBehaviour
 
     public Node NodeFromWorldPoint(Vector3 worldPosition)
     {
+        // Dünya koordinatlarýný izgara içindeki koordinatlara dönüþtür
         float percentX = (worldPosition.x + gridWorldSize.x / 2) / gridWorldSize.x;
         float percentY = (worldPosition.z + gridWorldSize.y / 2) / gridWorldSize.y;
         percentX = Mathf.Clamp01(percentX);
         percentY = Mathf.Clamp01(percentY);
 
+        // Düðüm dizinlerini hesapla
         int x = Mathf.RoundToInt((gridSizeX - 1) * percentX);
         int y = Mathf.RoundToInt((gridSizeY - 1) * percentY);
+
+        // Ýlgili düðümü döndür
         return grid[x, y];
     }
 
