@@ -3,7 +3,12 @@ guid: 3936db2af630069419588d7ad7f29dcc
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: SHTV_Material_Cars_White.005
+    second: {fileID: 2100000, guid: 8aefdbf8912f41549b1a16b92bd20d44, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
