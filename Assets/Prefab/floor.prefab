@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 6754200511610214384}
   - component: {fileID: 2761083804936596593}
   - component: {fileID: 5982143072909908211}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: floor
-  m_TagString: floor
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -111,5 +111,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b3ee61d6896c374982858d12ec47bf0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkable: 0
-  isTarget: 0

@@ -5,13 +5,13 @@ using UnityEngine;
 // Birim nesnesinin hedefe doðru hareketini saðlayan sýnýf
 public class Unit : MonoBehaviour
 {
-    GameObject target;
-    public GameObject player;
     [SerializeField] float speed = 10f;
-    Floor floor;
+    private GameObject target;
+    private GameObject player;
+    private Floor floor;
 
-    Vector3[] path; // Yol noktalarýný içeren dizi
-    int targetIndex; // Hedef yol noktasýnýn dizinini tutan deðiþken
+    private Vector3[] path; // Yol noktalarýný içeren dizi
+    private int targetIndex; // Hedef yol noktasýnýn dizinini tutan deðiþken
 
     private IEnumerator currentPath;
     private void Update()
@@ -26,23 +26,28 @@ public class Unit : MonoBehaviour
             {
                 floor = hit.transform.GetComponent<Floor>();
                 Player _player = hit.transform.GetComponent<Player>();
-                if (_player != null) 
+                
+                if (_player != null)
                 {
+                    if (player != null)
+                    {
+                        player.layer = 6;
+                        player = null;
+                    }
+
                     player = _player.gameObject;
-                    player.layer = 0;
+                    player.layer = 8;
                     GetComponent<Grids>().CreatGrid();
                 }
 
-                if (floor != null && player != null)
+                if (floor != null && player != null && floor.gameObject.layer == 9)
                 {
                     target = floor.gameObject;
-
                     PathRequestManager.RequestPath(player.transform.position, target.transform.position, OnPathFound);
                 }
             }
         }
     }
-
     // Yol bulunduðunda çaðrýlan metot
     public void OnPathFound(Vector3[] newPath, bool pathSuccessful)
     {
@@ -78,6 +83,7 @@ public class Unit : MonoBehaviour
                 // Eðer hedef dizini yol noktalarý dizininin boyutuna ulaþtýysa
                 if (targetIndex >= path.Length)
                 {
+                    yield return new WaitForSeconds(.5f);
                     // Yolun sonuna gelindi, döngüyü sonlandýr
                     player.layer = 6;
                     player = null;
@@ -97,3 +103,4 @@ public class Unit : MonoBehaviour
         }
     }
 }
+

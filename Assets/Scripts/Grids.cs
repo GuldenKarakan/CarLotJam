@@ -58,8 +58,7 @@ public class Grids : MonoBehaviour
                 // Düðümü oluþtur ve izgara dizisine ekle
                 grid[i, j] = new Node(walkable, worldPoint, i, j);
                 GameObject floor = Instantiate(gridObject, worldPoint, Quaternion.identity, transform);
-                floor.layer = walkable ? 0 : 7;
-
+                floor.layer = walkable ? 9 : 7;
             }
         }
     }

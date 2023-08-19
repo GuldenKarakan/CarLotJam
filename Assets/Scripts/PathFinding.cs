@@ -99,7 +99,6 @@ public class PathFinding : MonoBehaviour
         for (int i = 0; i < path.Count; i++)
         {
             waypoints.Add(path[i].worldPosition); // Yeni bir yönde ise waypointi ekle
-            UnityEngine.Debug.Log(i + ": " + path[i].worldPosition);
         }
 
         return waypoints.ToArray(); // Waypointleri dizi olarak döndür
@@ -116,3 +115,4 @@ public class PathFinding : MonoBehaviour
         return 20 * dstX + 10 * (dstY - dstX);
     }
 }
+
