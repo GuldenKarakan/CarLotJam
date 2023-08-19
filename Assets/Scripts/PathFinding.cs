@@ -6,6 +6,7 @@ using System.Diagnostics;
 
 public class PathFinding : MonoBehaviour
 {
+    [HideInInspector] public bool pathSuccess = false;
     PathRequestManager requestManager; // Yol isteklerini yöneten sýnýf
     Grids grid; // Yol gridini temsil eden sýnýf
 
@@ -22,7 +23,7 @@ public class PathFinding : MonoBehaviour
     {
 
         Vector3[] waypoints = new Vector3[0]; // Yol üzerindeki waypointler
-        bool pathSuccess = false; // Yol hesaplama baþarýlý mý?
+        pathSuccess = false; // Yol hesaplama baþarýlý mý?
 
         Node startNode = grid.NodeFromWorldPoint(startPos); // Baþlangýç düðümünü al
         Node targetNode = grid.NodeFromWorldPoint(targetPos); // Hedef düðümünü al

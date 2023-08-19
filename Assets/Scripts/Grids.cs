@@ -35,6 +35,8 @@ public class Grids : MonoBehaviour
     [ContextMenu("Creat Grid")]
     private void CreatGrid()
     {
+        ClearGrid();
+
         // Ýzgaranýn dünya boyutlarýný hesapla
         gridWorldSize = new Vector2(gridAxisX, gridAxisY) * 2;
         nodeDiameter = nodeRadius * 2;
@@ -59,10 +61,10 @@ public class Grids : MonoBehaviour
 
                 // Düðümün üzerinde engel var mý kontrol et
                 bool walkable = !(Physics.CheckSphere(worldPoint, nodeRadius, unwalkableMask));
-
                 // Düðümü oluþtur ve izgara dizisine ekle
                 grid[i, j] = new Node(walkable, worldPoint, i, j);
-                Instantiate(gridObject, worldPoint, Quaternion.identity, transform);
+                GameObject floor = Instantiate(gridObject, worldPoint, Quaternion.identity, transform);
+                floor.layer = walkable ? 0 : 7;
 
             }
         }

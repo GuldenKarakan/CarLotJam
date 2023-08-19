@@ -5,7 +5,7 @@ using UnityEngine;
 // Birim nesnesinin hedefe doðru hareketini saðlayan sýnýf
 public class Unit : MonoBehaviour
 {
-    public Transform target;
+    public GameObject target;
     [SerializeField] float speed = 10f;
 
     Vector3[] path; // Yol noktalarýný içeren dizi
@@ -13,8 +13,27 @@ public class Unit : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown("space"))
-            PathRequestManager.RequestPath(transform.position, target.position, OnPathFound);
+        if (Input.GetMouseButtonDown(0))
+        {
+            target = null;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit))
+            {
+                Floor floor = hit.transform.GetComponent<Floor>();
+                if (floor != null)
+                {
+                    target = floor.gameObject;
+                    if (PathRequestManager.instance.pathFinding.pathSuccess)
+                        floor.ChangeColor(Color.green);
+                    else
+                        floor.ChangeColor(Color.red);
+
+                    PathRequestManager.RequestPath(transform.position, target.transform.position, OnPathFound);
+                }
+            }
+        }
     }
 
     // Yol bulunduðunda çaðrýlan metot

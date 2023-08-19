@@ -6,12 +6,12 @@ using System;
 // Yol isteklerini yöneten sýnýf
 public class PathRequestManager : MonoBehaviour
 {
+    [HideInInspector] public PathFinding pathFinding; // Yol bulma iþlemlerini gerçekleþtiren sýnýf
     // Yol isteklerinin sýrasýný tutan kuyruk
     Queue<PathRequest> pathRequestQueue = new Queue<PathRequest>();
     PathRequest currentPathRequest;// Þu anki yol isteði
 
-    static PathRequestManager instance; // Yol istek yöneticisi örneði
-    PathFinding pathFinding; // Yol bulma iþlemlerini gerçekleþtiren sýnýf
+    public static PathRequestManager instance; // Yol istek yöneticisi örneði
 
     bool isProcessingPath; // Bir yol iþleme sürecinin devam edip etmediðini belirten flag
 
