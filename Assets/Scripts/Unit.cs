@@ -6,6 +6,7 @@ using UnityEngine;
 public class Unit : MonoBehaviour
 {
     GameObject target;
+    public GameObject player;
     [SerializeField] float speed = 10f;
     Floor floor;
 
@@ -24,11 +25,19 @@ public class Unit : MonoBehaviour
             if (Physics.Raycast(ray, out hit))
             {
                 floor = hit.transform.GetComponent<Floor>();
-                if (floor != null)
+                Player _player = hit.transform.GetComponent<Player>();
+                if (_player != null) 
+                {
+                    player = _player.gameObject;
+                    player.layer = 0;
+                    GetComponent<Grids>().CreatGrid();
+                }
+
+                if (floor != null && player != null)
                 {
                     target = floor.gameObject;
 
-                    PathRequestManager.RequestPath(transform.position, target.transform.position, OnPathFound);
+                    PathRequestManager.RequestPath(player.transform.position, target.transform.position, OnPathFound);
                 }
             }
         }
@@ -61,7 +70,7 @@ public class Unit : MonoBehaviour
         while (true)
         {
             // Eðer birim nesne þu anki yol noktasýna vardýysa
-            if (transform.position == currentWaypoint)
+            if (player.transform.position == currentWaypoint)
             {
                 // Hedef yol noktasýnýn dizinini artýr
                 targetIndex++;
@@ -70,6 +79,9 @@ public class Unit : MonoBehaviour
                 if (targetIndex >= path.Length)
                 {
                     // Yolun sonuna gelindi, döngüyü sonlandýr
+                    player.layer = 6;
+                    player = null;
+                    GetComponent<Grids>().CreatGrid();
                     yield break;
                 }
 
@@ -78,7 +90,7 @@ public class Unit : MonoBehaviour
             }
 
             // Birim nesneyi doðru yöne hareket ettir
-            transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, speed * Time.deltaTime);
+            player.transform.position = Vector3.MoveTowards(player.transform.position, currentWaypoint, speed * Time.deltaTime);
 
             // Bir sonraki frame'e geçmeden önce bekle
             yield return null;
