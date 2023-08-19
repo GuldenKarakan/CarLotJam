@@ -5,12 +5,14 @@ using UnityEngine;
 // Birim nesnesinin hedefe doðru hareketini saðlayan sýnýf
 public class Unit : MonoBehaviour
 {
-    public GameObject target;
+    GameObject target;
     [SerializeField] float speed = 10f;
+    Floor floor;
 
     Vector3[] path; // Yol noktalarýný içeren dizi
     int targetIndex; // Hedef yol noktasýnýn dizinini tutan deðiþken
 
+    private IEnumerator currentPath;
     private void Update()
     {
         if (Input.GetMouseButtonDown(0))
@@ -21,14 +23,10 @@ public class Unit : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit))
             {
-                Floor floor = hit.transform.GetComponent<Floor>();
+                floor = hit.transform.GetComponent<Floor>();
                 if (floor != null)
                 {
                     target = floor.gameObject;
-                    if (PathRequestManager.instance.pathFinding.pathSuccess)
-                        floor.ChangeColor(Color.green);
-                    else
-                        floor.ChangeColor(Color.red);
 
                     PathRequestManager.RequestPath(transform.position, target.transform.position, OnPathFound);
                 }
@@ -42,9 +40,15 @@ public class Unit : MonoBehaviour
         if(pathSuccessful)
         {
             path = newPath;
-            StopCoroutine("FollowPath");
-            StartCoroutine("FollowPath");
+            if (currentPath != null)
+                StopCoroutine(currentPath);
+            currentPath = FollowPath();
+            targetIndex = 0;
+            StartCoroutine(currentPath);
+            floor.ChangeColor(Color.green);
         }
+        else
+            floor.ChangeColor(Color.red);
     }
 
     // Yolu takip eden iþlemi gerçekleþtiren IEnumerator metodu

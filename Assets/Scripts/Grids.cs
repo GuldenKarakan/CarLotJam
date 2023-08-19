@@ -20,12 +20,6 @@ public class Grids : MonoBehaviour
     {
         CreatGrid();
     }
-    private void Update()
-    {
-        if (Input.GetKey("a"))
-            CreatGrid();
-    }
-
     public int MaxSize
     {
         get { return gridSizeX * gridSizeY; }
@@ -33,7 +27,7 @@ public class Grids : MonoBehaviour
 
 
     [ContextMenu("Creat Grid")]
-    private void CreatGrid()
+    public void CreatGrid()
     {
         ClearGrid();
 
@@ -76,36 +70,42 @@ public class Grids : MonoBehaviour
         // Oluþturulan Gridleri editorden temizler
         for (int i = transform.childCount; i > 0; i--)
             DestroyImmediate(transform.GetChild(0).gameObject);
+
+        ResetGrid();
+    }
+
+    public void ResetGrid()
+    {
+        for (int i = 0; i < gridSizeX; i++)
+        {
+            for (int j = 0; j < gridSizeY; j++)
+            {
+                grid[i, j].gCost = 0;
+                grid[i, j].hCost = 0;
+                grid[i, j].parent = null;
+            }
+        }
     }
     public List<Node> GetNeighbours(Node node)
     {
         List<Node> neighbours = new List<Node>();
 
+        if (IsNeighbourValid(node.gridX - 1, node.gridY))
+            neighbours.Add(grid[node.gridX - 1, node.gridY]);
 
-        // Düðümün etrafýndaki komþularý dolaþ
-        for (int x = -1; x <= 1; x++)
-        {
-            for (int y = -1; y <= 1; y++)
-            {
-                if (x == 0 && y == 0)
-                    continue;
+        if (IsNeighbourValid(node.gridX + 1, node.gridY))
+            neighbours.Add(grid[node.gridX + 1, node.gridY]);
 
-                // Komþu düðümün dizinlerini hesapla
-                int checkX = node.gridX + x;
-                int checkY = node.gridY + y;
+        if (IsNeighbourValid(node.gridX, node.gridY -1))
+            neighbours.Add(grid[node.gridX, node.gridY -1]);
 
-                // Dizinler izgara sýnýrlarýnda mý kontrol et
-                if (checkX >= 0 && checkX < gridSizeX && checkY >= 0 && checkY < gridSizeY)
-                {
-                    // Komþu düðümü komþular listesine ekle
-                    neighbours.Add(grid[checkX, checkY]);
-                }
-            }
-        }
+        if (IsNeighbourValid(node.gridX, node.gridY +1))
+            neighbours.Add(grid[node.gridX, node.gridY +1]);
 
         return neighbours;
 
     }
+
 
     public Node NodeFromWorldPoint(Vector3 worldPosition)
     {
@@ -123,6 +123,10 @@ public class Grids : MonoBehaviour
         return grid[x, y];
     }
 
+    private bool IsNeighbourValid(int checkX, int checkY)
+    {
+        return checkX >= 0 && checkX < gridSizeX && checkY >= 0 && checkY < gridSizeY;
+    }
     private void OnDrawGizmos()
     {
         Gizmos.DrawWireCube(transform.position, new Vector3(gridAxisX * 2, 1, gridAxisY * 2));
@@ -133,7 +137,13 @@ public class Grids : MonoBehaviour
             {
                 Gizmos.color = (n.walkable) ? Color.white : Color.red;
                 Gizmos.DrawCube(n.worldPosition, new Vector3(1, .1f, 1) * (nodeDiameter - .1f));
+                if(n.parent != null)
+                {
+                    Gizmos.color = Color.blue;
+                    Gizmos.DrawLine(n.worldPosition + Vector3.up, n.parent.worldPosition + Vector3.up * 2);
+                }
             }
         }
     }
+
 }

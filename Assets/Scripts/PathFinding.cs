@@ -58,7 +58,6 @@ public class PathFinding : MonoBehaviour
                         neighbour.gCost = newMovementCostToNeighbour; // Yeni maliyeti güncelle
                         neighbour.hCost = GetDistance(neighbour, targetNode); // Hedef maliyeti güncelle
                         neighbour.parent = currentNode; // Komþu düðümün ebeveynini güncelle
-
                         if (!openSet.Contains(neighbour)) // Eðer komþu açýk kümede deðilse
                             openSet.Add(neighbour); // Komþuyu açýk kümeye ekle
                     }
@@ -68,11 +67,9 @@ public class PathFinding : MonoBehaviour
         }
         yield return null; // Ýterasyon sonunda bir frame beklemek için
         if (pathSuccess)
-        {
             waypoints = RetracePath(startNode, targetNode); // Yolun waypointlerini oluþtur
-        }
-
         requestManager.FinishProcessingPath(waypoints, pathSuccess); // Yol hesaplama sonucunu yol istek yöneticisine bildir
+        grid.ResetGrid();
     }
 
     // Yolu geriye dönerek oluþturan metot
@@ -84,7 +81,9 @@ public class PathFinding : MonoBehaviour
         while (currentNode != startNode)
         {
             path.Add(currentNode); // Düðümü yola ekle
+            //UnityEngine.Debug.Log("c: " + currentNode.worldPosition + " c.p: " + currentNode.parent.worldPosition);
             currentNode = currentNode.parent; // Bir önceki düðüme geç
+            
         }
         Vector3[] waypoints = SimplifyPath(path); // Yolu basitleþtir
         Array.Reverse(waypoints); // Yolu ters çevir
@@ -97,16 +96,10 @@ public class PathFinding : MonoBehaviour
         List<Vector3> waypoints = new List<Vector3>();
         Vector2 directionOld = Vector2.zero;
 
-        for (int i = 1; i < path.Count; i++)
+        for (int i = 0; i < path.Count; i++)
         {
-            Vector2 directionNew = new Vector2(path[i].gridX - path[i - 1].gridX, path[i].gridY - path[i - 1].gridY);
-
-            if (directionNew != directionOld)
-            {
-                waypoints.Add(path[i].worldPosition); // Yeni bir yönde ise waypointi ekle
-            }
-
-            directionOld = directionNew; // Yönü güncelle
+            waypoints.Add(path[i].worldPosition); // Yeni bir yönde ise waypointi ekle
+            UnityEngine.Debug.Log(i + ": " + path[i].worldPosition);
         }
 
         return waypoints.ToArray(); // Waypointleri dizi olarak döndür
@@ -119,7 +112,7 @@ public class PathFinding : MonoBehaviour
         int dstY = Mathf.Abs(nodeA.gridY - nodeB.gridY);
 
         if (dstX > dstY)
-            return 14 * dstY + 10 * (dstX - dstY);
-        return 14 * dstX + 10 * (dstY - dstX);
+            return 20 * dstY + 10 * (dstX - dstY);
+        return 20 * dstX + 10 * (dstY - dstX);
     }
 }
