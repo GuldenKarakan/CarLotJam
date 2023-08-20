@@ -740,8 +740,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bb0bc58f8d7f9a4691cfae7787f5674, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  point1: {fileID: 1749515620}
-  point2: {fileID: 442773341}
+  point:
+  - {fileID: 0}
+  - {fileID: 0}
+  color:
+    colorName: 0
+  pathfinding: {fileID: 0}
 --- !u!65 &4247007935554705560
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -754,7 +758,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1.5424447, y: 1, z: 3.0967574}
-  m_Center: {x: -0.020863295, y: 0, z: -0.64154506}
+  m_Center: {x: 0, y: 0, z: -0.6}
 --- !u!1 &6586949102547932537
 GameObject:
   m_ObjectHideFlags: 0

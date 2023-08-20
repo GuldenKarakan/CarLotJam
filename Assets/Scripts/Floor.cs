@@ -14,24 +14,22 @@ public class Floor : MonoBehaviour
     }
     public void ChangeColor(Color color)
     {
-        if (gameObject.layer != 7)
+        //if (gameObject.layer != 7)
         {
-            material.DOColor(color, .4f).SetEase(Ease.OutBounce).OnComplete(ResetColor); ;
+            material.DOColor(color, .4f).SetEase(Ease.OutBounce).OnComplete(() =>
+            {
+                material.DOColor(originalColor, .4f).SetEase(Ease.InBounce);
+            });
         }
-    }
-    private void ResetColor()
-    {
-        // Tween tamamlandýðýnda objeyi özgün rengine geri tweenle
-        material.DOColor(originalColor, .4f).SetEase(Ease.InBounce);
     }
 
     private void OnMouseDown()
     {
-        gameObject.layer = Physics.CheckSphere(transform.position, 1f, 8) ? 7 : 9;
+        //gameObject.layer = Physics.CheckSphere(transform.position, 1f, 8) ? 7 : 9;
     }
 
     private void OnDestroy()
     {
-        DOTween.KillAll();
+        transform.DOKill();
     }
 }

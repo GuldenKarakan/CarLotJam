@@ -16,8 +16,10 @@ public class Grids : MonoBehaviour
     float nodeDiameter;
     int gridSizeX, gridSizeY;
 
+    public static Grids instance;
     private void Awake()
     {
+        instance = this;
         CreatGrid();
     }
     public int MaxSize
@@ -139,7 +141,7 @@ public class Grids : MonoBehaviour
                 if(n.parent != null)
                 {
                     Gizmos.color = Color.blue;
-                    Gizmos.DrawLine(n.worldPosition + Vector3.up, n.parent.worldPosition + Vector3.up * 2);
+                    Gizmos.DrawLine(n.worldPosition + Vector3.up, n.parent.worldPosition + Vector3.up);
                 }
             }
         }

@@ -4,13 +4,23 @@ using UnityEngine;
 
 public class Point : MonoBehaviour
 {
-    public GameObject target;
+    [HideInInspector] public GameObject target;
+    [SerializeField] Transform door;
+    CarControl car;
+
+    private void Start()
+    {
+        car = transform.parent.GetComponent<CarControl>();
+    }
     private void OnTriggerEnter(Collider other)
     {
         Floor floor = other.GetComponent<Floor>();
-        if (floor == null)
-            return;
-        if (floor.gameObject.layer != 7)
+        Player player = other.GetComponent<Player>();
+
+        if (floor != null)
             target = other.gameObject;
+
+        if (player != null)
+            car.door = door;
     }
 }

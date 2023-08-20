@@ -7,8 +7,9 @@ public class Unit : MonoBehaviour
 {
     [SerializeField] float speed = 10f;
     private GameObject target;
-    private GameObject player;
+    private Player player;
     private Floor floor;
+    private CarControl carControl;
 
     private Vector3[] path; // Yol noktalarýný içeren dizi
     private int targetIndex; // Hedef yol noktasýnýn dizinini tutan deðiþken
@@ -19,6 +20,7 @@ public class Unit : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             target = null;
+            carControl = null;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 
@@ -26,43 +28,60 @@ public class Unit : MonoBehaviour
             {
                 floor = hit.transform.GetComponent<Floor>();
                 Player _player = hit.transform.GetComponent<Player>();
-                
+                carControl = hit.transform.GetComponent<CarControl>();
+
                 if (_player != null)
                 {
                     if (player != null)
                     {
-                        player.layer = 6;
+                        player.gameObject.layer = 6;
                         player = null;
                     }
 
-                    player = _player.gameObject;
-                    player.layer = 8;
+                    player = _player;
+                    player.gameObject.layer = 8;
                     GetComponent<Grids>().CreatGrid();
                 }
 
-                if (floor != null && player != null && floor.gameObject.layer == 9)
+                if (floor != null && player != null)
                 {
                     target = floor.gameObject;
-                    PathRequestManager.RequestPath(player.transform.position, target.transform.position, OnPathFound);
+                    RequestPath(target.transform.position);
+                }
+
+                if(carControl != null && carControl.color.colorName == player.color.colorName)
+                {
+                   carControl.CarPoint(player.gameObject, (x) => RequestPath(x));
                 }
             }
         }
     }
+
+    private void RequestPath(Vector3 targetPos)
+    {
+        PathRequestManager.RequestPath(player.transform.position, targetPos, OnPathFound);
+    }
     // Yol bulunduðunda çaðrýlan metot
     public void OnPathFound(Vector3[] newPath, bool pathSuccessful)
     {
-        if(pathSuccessful)
+        if (pathSuccessful)
         {
             path = newPath;
             if (currentPath != null)
                 StopCoroutine(currentPath);
-            currentPath = FollowPath();
-            targetIndex = 0;
-            StartCoroutine(currentPath);
-            floor.ChangeColor(Color.green);
+            if(newPath.Length > 0)
+            {
+                currentPath = FollowPath();
+                targetIndex = 0;
+                StartCoroutine(currentPath);
+                if (target != null)
+                    floor.ChangeColor(Color.green);
+            }
+           
         }
         else
-            floor.ChangeColor(Color.red);
+            if (target != null)
+                floor.ChangeColor(Color.red);
     }
 
     // Yolu takip eden iþlemi gerçekleþtiren IEnumerator metodu
@@ -85,7 +104,14 @@ public class Unit : MonoBehaviour
                 {
                     yield return new WaitForSeconds(.5f);
                     // Yolun sonuna gelindi, döngüyü sonlandýr
-                    player.layer = 6;
+                    if (carControl != null)
+                    {
+                        carControl.PlayAnim();
+                        player.PlayAnim(carControl.transform);
+                        player.GetComponent<Collider>().enabled = false;
+                    }
+
+                    player.gameObject.layer = 6;
                     player = null;
                     GetComponent<Grids>().CreatGrid();
                     yield break;
@@ -97,6 +123,9 @@ public class Unit : MonoBehaviour
 
             // Birim nesneyi doðru yöne hareket ettir
             player.transform.position = Vector3.MoveTowards(player.transform.position, currentWaypoint, speed * Time.deltaTime);
+            //Quaternion targetRotation = Quaternion.LookRotation(currentWaypoint - player.transform.position);
+            //player.transform.rotation = Quaternion.Slerp(player.transform.rotation, targetRotation, speed *2f * Time.deltaTime);
+            player.transform.LookAt(currentWaypoint);
 
             // Bir sonraki frame'e geçmeden önce bekle
             yield return null;

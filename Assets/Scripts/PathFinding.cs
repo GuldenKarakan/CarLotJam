@@ -21,6 +21,7 @@ public class PathFinding : MonoBehaviour
     }
     IEnumerator FindPath(Vector3 startPos, Vector3 targetPos)
     {
+        grid.ResetGrid();
 
         Vector3[] waypoints = new Vector3[0]; // Yol üzerindeki waypointler
         pathSuccess = false; // Yol hesaplama baþarýlý mý?
@@ -69,7 +70,6 @@ public class PathFinding : MonoBehaviour
         if (pathSuccess)
             waypoints = RetracePath(startNode, targetNode); // Yolun waypointlerini oluþtur
         requestManager.FinishProcessingPath(waypoints, pathSuccess); // Yol hesaplama sonucunu yol istek yöneticisine bildir
-        grid.ResetGrid();
     }
 
     // Yolu geriye dönerek oluþturan metot
@@ -81,7 +81,8 @@ public class PathFinding : MonoBehaviour
         while (currentNode != startNode)
         {
             path.Add(currentNode); // Düðümü yola ekle
-            //UnityEngine.Debug.Log("c: " + currentNode.worldPosition + " c.p: " + currentNode.parent.worldPosition);
+            if(currentNode.parent == null)
+            UnityEngine.Debug.Log("c: " + currentNode.worldPosition);
             currentNode = currentNode.parent; // Bir önceki düðüme geç
             
         }
@@ -94,7 +95,6 @@ public class PathFinding : MonoBehaviour
     Vector3[] SimplifyPath(List<Node> path)
     {
         List<Vector3> waypoints = new List<Vector3>();
-        Vector2 directionOld = Vector2.zero;
 
         for (int i = 0; i < path.Count; i++)
         {
