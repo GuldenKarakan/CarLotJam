@@ -50,9 +50,10 @@ public class Unit : MonoBehaviour
                     RequestPath(target.transform.position);
                 }
 
-                if(carControl != null && carControl.color.colorName == player.color.colorName)
+                if (carControl != null && carControl.color.colorName == player.color.colorName)
                 {
-                   carControl.CarPoint(player.gameObject, (x) => RequestPath(x));
+                    carControl.CarPoint(player.gameObject, (x) => RequestPath(x));
+                    player.happy.Play();
                 }
             }
         }
@@ -70,7 +71,7 @@ public class Unit : MonoBehaviour
             path = newPath;
             if (currentPath != null)
                 StopCoroutine(currentPath);
-            if(newPath.Length > 0)
+            if (newPath.Length > 0)
             {
                 currentPath = FollowPath();
                 targetIndex = 0;
@@ -80,11 +81,15 @@ public class Unit : MonoBehaviour
 
                 player.anim.SetTrigger("run");
             }
-           
+
         }
         else
-            if (target != null)
-                floor.ChangeColor(Color.red);
+        
+        if (target != null)
+        {
+            floor.ChangeColor(Color.red);
+            player.angry.Play();
+        }
     }
 
     // Yolu takip eden iþlemi gerçekleþtiren IEnumerator metodu

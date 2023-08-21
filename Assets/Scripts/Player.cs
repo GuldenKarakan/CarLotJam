@@ -5,8 +5,9 @@ using DG.Tweening;
 
 public class Player : MonoBehaviour
 {
+    [HideInInspector] public Animator anim;
     public CustomColor color;
-    public Animator anim;
+    public ParticleSystem angry, happy;
 
     private void Start()
     {

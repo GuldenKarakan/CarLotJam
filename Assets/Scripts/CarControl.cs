@@ -14,6 +14,7 @@ public class CarControl : MonoBehaviour
 
     [SerializeField] private LayerMask layer;
     [SerializeField] private Transform body;
+    [SerializeField] private ParticleSystem smoke;
 
     private Vector3 selectedPoint;
     private UnityAction<Vector3> OnCalculated;
@@ -26,6 +27,7 @@ public class CarControl : MonoBehaviour
     private void Start()
     {
         MeshRenderer renderer;
+        smoke.Stop();
         foreach (Transform child in transform.GetChild(0))
         {
             renderer = child.GetComponent<MeshRenderer>();

@@ -8,8 +8,10 @@ public class Barrier : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         CarControl car = other.GetComponent<CarControl>();
-        if (car != null)
-            obje.transform.DOLocalRotate(new Vector3(0, 0, 30), .15f);
+        if (car == null) return;
+
+        obje.transform.DOLocalRotate(new Vector3(0, 0, 30), .15f);
+        finishParticle.Play();
     }
 
     private void OnTriggerExit(Collider other)
