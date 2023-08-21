@@ -619,11 +619,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   anim: {fileID: 0}
+  body: {fileID: 0}
   color:
     colorName: 2
     colorMaterial: {fileID: 2100000, guid: 17916eea325bb7b419da221aeb981226, type: 2}
   angry: {fileID: 4083061733199732413}
   happy: {fileID: 482026591198676124}
+  outLine: {fileID: 2100000, guid: a07c1eedc451bc74ab4ec64314bc13e8, type: 2}
 --- !u!95 &3017087996886165115
 Animator:
   serializedVersion: 5

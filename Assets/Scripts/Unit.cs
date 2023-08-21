@@ -38,8 +38,9 @@ public class Unit : MonoBehaviour
                         player = null;
                     }
 
-                    player = _player;
-                    player.anim.SetTrigger("happy");
+                    player = _player; 
+                    StartCoroutine(player.OutlineAdd());
+                    player.anim.SetTrigger("selected");
                     player.gameObject.layer = 8;
                     GetComponent<Grids>().CreatGrid();
                 }
@@ -54,6 +55,7 @@ public class Unit : MonoBehaviour
                 {
                     carControl.CarPoint(player.gameObject, (x) => RequestPath(x));
                     player.happy.Play();
+                    StartCoroutine(carControl.OutlineAdd());
                 }
             }
         }

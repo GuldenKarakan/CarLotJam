@@ -8,13 +8,20 @@ public class CameraControl : MonoBehaviour
     [SerializeField] private Transform camPos2;
     private Camera cam;
 
+    public static CameraControl instance;
+
     private void Awake()
     {
+        instance = this;
         cam = GetComponent<Camera>();
 
     }
+    private void Start()
+    {
+        CameraMode();
+    }
 
-    private void Update()
+    public void CameraMode()
     {
         int gridY = Grids.instance.gridAxisY;
         if (gridY < 6)

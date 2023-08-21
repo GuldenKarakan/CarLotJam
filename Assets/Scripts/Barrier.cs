@@ -12,6 +12,7 @@ public class Barrier : MonoBehaviour
 
         obje.transform.DOLocalRotate(new Vector3(0, 0, 30), .15f);
         finishParticle.Play();
+        car.happy.Play();
     }
 
     private void OnTriggerExit(Collider other)
