@@ -167,7 +167,12 @@ public class CarControl : MonoBehaviour
 
     private void RayContact()
     {
-        GetComponent<BoxCollider>().size = Vector3.one * .5f;
+        BoxCollider boxCollider = GetComponent<BoxCollider>();
+        if(boxCollider.size.z < 4)
+            boxCollider.size = Vector3.one * .5f;
+        else
+            boxCollider.size = Vector3.one * .6f;
+
         gameObject.layer = 0;
         grid.CreatGrid();
     }

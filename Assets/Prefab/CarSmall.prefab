@@ -522,8 +522,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 1.2575971, z: 3}
+  m_Center: {x: -0, y: 0.06010598, z: 0}
 --- !u!54 &3213582629197849836
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -800,7 +800,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2084218700381923695}
   m_Layer: 0
-  m_Name: RotationToForward
+  m_Name: body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

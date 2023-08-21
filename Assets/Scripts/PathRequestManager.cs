@@ -50,9 +50,7 @@ public class PathRequestManager : MonoBehaviour
     // Yol iþleme tamamlandýðýnda çaðrýlan metot
     public void FinishProcessingPath(Vector3[] path, bool success)
     {
-        // Yol iþleme sonucunu ve baþarýlý olup olmadýðýný geri çaðýrýlan fonksiyonla paylaþ
         currentPathRequest.callback(path, success);
-        // Yol iþlemesi tamamlandý, flag'i kapat
         isProcessingPath = false;
         // Bir sonraki yol isteðini iþlemeye çalýþ
         TryProcessNext();

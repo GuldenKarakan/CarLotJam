@@ -5,7 +5,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private GameObject panel;
     [SerializeField] private Transform parent;
     [SerializeField] private ParticleSystem finishParticle;
-    int levelIndex = 1;
+    [SerializeField] private int levelIndex = 1;
     Level level;
     bool isFinish = false;
 
@@ -34,7 +34,7 @@ public class LevelManager : MonoBehaviour
         level = Instantiate(Resources.Load<GameObject>("levels/level-" + levelIndex), parent).GetComponent<Level>();
         CameraControl.instance.CameraMode();
         levelIndex++;
-        if (levelIndex == 3)
+        if (levelIndex == 5)
             levelIndex = 1;
         panel.SetActive(false);
 

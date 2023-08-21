@@ -80,7 +80,8 @@ public class Unit : MonoBehaviour
                 if (target != null)
                     floor.ChangeColor(Color.green);
 
-                player.anim.SetTrigger("run");
+                player.anim.SetTrigger("run"); 
+                player.happy.Play();
             }
 
         }
