@@ -39,6 +39,7 @@ public class Unit : MonoBehaviour
                     }
 
                     player = _player;
+                    player.anim.SetTrigger("happy");
                     player.gameObject.layer = 8;
                     GetComponent<Grids>().CreatGrid();
                 }
@@ -76,6 +77,8 @@ public class Unit : MonoBehaviour
                 StartCoroutine(currentPath);
                 if (target != null)
                     floor.ChangeColor(Color.green);
+
+                player.anim.SetTrigger("run");
             }
            
         }
@@ -102,15 +105,18 @@ public class Unit : MonoBehaviour
                 // Eðer hedef dizini yol noktalarý dizininin boyutuna ulaþtýysa
                 if (targetIndex >= path.Length)
                 {
-                    yield return new WaitForSeconds(.5f);
-                    // Yolun sonuna gelindi, döngüyü sonlandýr
                     if (carControl != null)
                     {
-                        carControl.PlayAnim();
-                        player.PlayAnim(carControl.transform);
                         player.GetComponent<Collider>().enabled = false;
+                        carControl.PlayAnim(1);
+                        yield return new WaitForSeconds(.1f);
+                        player.anim.SetTrigger("openDoor");
+                        carControl.PlayAnim(2);
+                        player.PlayAnim(carControl.animPos);
                     }
-
+                    else
+                        yield return new WaitForSeconds(.2f);
+                    // Yolun sonuna gelindi, döngüyü sonlandýr
                     player.gameObject.layer = 6;
                     player = null;
                     GetComponent<Grids>().CreatGrid();

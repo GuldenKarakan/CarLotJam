@@ -6,6 +6,7 @@ public class Point : MonoBehaviour
 {
     [HideInInspector] public GameObject target;
     [SerializeField] Transform door;
+    [SerializeField] int cordinat;
     CarControl car;
 
     private void Start()
@@ -21,6 +22,9 @@ public class Point : MonoBehaviour
             target = other.gameObject;
 
         if (player != null)
+        {
             car.door = door;
+            car.cordinat = cordinat;
+        }
     }
 }

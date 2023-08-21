@@ -6,15 +6,22 @@ using DG.Tweening;
 
 public class CarControl : MonoBehaviour
 {
+    [HideInInspector] public Transform door;
+    [HideInInspector] public int cordinat;
     public Point[] point = new Point[2];
     public CustomColor color;
-    public Transform door;
+    public Transform animPos;
 
+    [SerializeField] private LayerMask layer;
+    [SerializeField] private Transform body;
 
     private Vector3 selectedPoint;
-    private int selectedPathLength = int.MaxValue;
     private UnityAction<Vector3> OnCalculated;
+    private int selectedPathLength = int.MaxValue;
     private int totalCalculation;
+    private float speed = 8f;
+    private bool isMove = false;
+    int value = 0;
 
     private void Start()
     {
@@ -24,6 +31,48 @@ public class CarControl : MonoBehaviour
             renderer = child.GetComponent<MeshRenderer>();
             renderer.material = color.colorMaterial;
         }
+    }
+
+    private void Update()
+    {
+        //if (!isMove)
+        //{
+        //    RaycastHit front, back, down;
+        //    Physics.Raycast(transform.position, Vector3.forward, out front, 15, layer);
+        //    Physics.Raycast(transform.position, -Vector3.forward, out back, 15, layer);
+
+        //    //if (front.transform.gameObject.layer != 10 || back.transform.gameObject.layer != 10) return;
+        //    isMove = true;
+        //    if (front.transform != null && back.transform != null)
+        //    {
+        //        Debug.Log(front.transform.gameObject.layer);
+        //        Debug.Log(back.transform.gameObject.layer);
+        //        if (front.transform.gameObject.layer == 10 && back.transform.gameObject.layer == 10)
+        //        {
+        //            if (front.distance < back.distance)
+        //                value = 1;
+        //            else
+        //                value = -1;
+        //        }
+        //    }
+        //    else if (front.transform != null && back.transform == null)
+        //    {
+        //        if (front.transform.gameObject.layer == 10)
+        //        {
+        //            value = 1;
+        //        }
+        //    }
+        //    else if (front.transform == null && back.transform != null)
+        //    {
+        //        if (transform.gameObject.layer == 10)
+        //        {
+        //            value = -1;
+        //        }
+        //    }
+        //    else isMove = false;
+        //}
+
+        //transform.Translate(Vector3.forward * value * speed * Time.deltaTime);
     }
 
     public void CarPoint(GameObject player, UnityAction < Vector3 > onCalculated)
@@ -66,10 +115,37 @@ public class CarControl : MonoBehaviour
         return point[0].transform.position;
     }
 
-    public void PlayAnim()
-    { 
-        if (door != null)
-            door.DORotate(new Vector3(0, 70, 0), .5f).SetEase(Ease.Linear).OnComplete(() => door.DORotate(Vector3.zero, .5f));
+    public void PlayAnim(int animIndex)
+    {
+        if (door == null)
+            return;
+
+        switch (animIndex)
+        {
+            case 1:
+                door.DOLocalRotate(new Vector3(0, 70, 0) * cordinat, .4f).SetEase(Ease.Linear).OnComplete(() => door.DOLocalRotate(Vector3.zero, .5f).SetEase(Ease.Linear));
+                break;
+            case 2:
+                body.DOLocalRotate(new Vector3(0, 0, 18) * cordinat, .4f).SetEase(Ease.Linear).OnComplete(() => body.DOLocalRotate(Vector3.zero, .4f).SetEase(Ease.Linear));
+                break;
+            case 3:
+                body.DOShakePosition(.2f, .03f).SetEase(Ease.Linear).SetLoops(-1);
+                break;
+            default:
+                break;
+
+
+
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.transform.gameObject.layer != 10)
+            return;
+        Vector3 rotation = transform.rotation.eulerAngles + new Vector3(0, 90, 0) * value;
+        transform.DORotate(rotation, .1f).SetEase(Ease.Linear);
+        value = 1;
     }
 }
 

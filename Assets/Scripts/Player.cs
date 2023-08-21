@@ -6,15 +6,17 @@ using DG.Tweening;
 public class Player : MonoBehaviour
 {
     public CustomColor color;
+    public Animator anim;
 
     private void Start()
     {
-
+        anim = GetComponent<Animator>();
         transform.GetChild(1).GetComponent<SkinnedMeshRenderer>().material = color.colorMaterial;
     }
     public void PlayAnim(Transform target)
     {
-        transform.DOMove(target.position, .5f).OnComplete(() => transform.parent = target);
-        transform.DOScale(Vector3.zero, .8f);
+        transform.LookAt(target);
+        transform.DOMove(target.position, .8f).OnComplete(() => transform.parent = target);
+        transform.DOScale(Vector3.zero, 2f);
     }
 }
