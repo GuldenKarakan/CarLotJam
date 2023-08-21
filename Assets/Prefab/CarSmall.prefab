@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 442773340}
   - component: {fileID: 442773342}
   - component: {fileID: 442773341}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: pointRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -27,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 442773338}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.0231004, y: -0.637, z: 1.0013001}
+  m_LocalPosition: {x: 2.0231009, y: -0.6370239, z: 1.0013126}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -102,7 +102,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 675904558}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.023100376, y: -0.637, z: -0.5986998}
+  m_LocalPosition: {x: 0.023100438, y: -0.6370239, z: -0.5986939}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -121,7 +121,7 @@ GameObject:
   - component: {fileID: 1749515619}
   - component: {fileID: 1749515621}
   - component: {fileID: 1749515620}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: pointLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -136,7 +136,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1749515617}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.9768996, y: -0.637, z: 1.0013001}
+  m_LocalPosition: {x: -1.9769002, y: -0.6370239, z: 1.0013123}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -213,7 +213,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1040186090052751301}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.7641792, y: -0.39512902, z: -0.9657824}
+  m_LocalPosition: {x: -0.7600002, y: -0.3951416, z: -0.9299927}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -380,7 +380,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4705096602375653279}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.795393, y: -0.39512914, z: 1.0412438}
+  m_LocalPosition: {x: 0.80000067, y: -0.3951416, z: 1.0799866}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -464,7 +464,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6453025452787798360}
-  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: -4.0269, y: 0.74, z: 3.9813}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -496,6 +496,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   door: {fileID: 0}
   cordinat: 0
+  getOn: 0
+  layer:
+    serializedVersion: 2
+    m_Bits: 1856
   point:
   - {fileID: 1749515620}
   - {fileID: 442773341}
@@ -503,12 +507,9 @@ MonoBehaviour:
     colorName: 2
     colorMaterial: {fileID: 2100000, guid: 464ae4a0b83cec345bfaf6c7e2a6caad, type: 2}
   animPos: {fileID: 675904559}
-  happy: {fileID: 1900002313105478031}
+  body: {fileID: 2084218700381923695}
   smoke: {fileID: 3881361109492403439}
-  layer:
-    serializedVersion: 2
-    m_Bits: 1600
-  body: {fileID: 2044343854244317168}
+  happy: {fileID: 1900002313105478031}
   outLine: {fileID: 2100000, guid: a07c1eedc451bc74ab4ec64314bc13e8, type: 2}
 --- !u!65 &4247007935554705560
 BoxCollider:
@@ -565,7 +566,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6593462540174603614}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.7641792, y: -0.39512914, z: 1.0389712}
+  m_LocalPosition: {x: -0.76000047, y: -0.3951416, z: 1.0700076}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -813,7 +814,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7394751472220941371}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.023100376, y: 0.29084992, z: -0.04884982}
+  m_LocalPosition: {x: 0, y: 0.2999878, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -849,7 +850,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8153099927745896825}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.795393, y: -0.39512902, z: -0.9635098}
+  m_LocalPosition: {x: 0.80000067, y: -0.3951416, z: -0.9299929}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -932,15 +933,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3881361109480283365, guid: 4573fc9ff1128794f87b720ea01952a6, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.34310055
+      value: 0.34310058
       objectReference: {fileID: 0}
     - target: {fileID: 3881361109480283365, guid: 4573fc9ff1128794f87b720ea01952a6, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.414
+      value: -0.41400146
       objectReference: {fileID: 0}
     - target: {fileID: 3881361109480283365, guid: 4573fc9ff1128794f87b720ea01952a6, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.9217002
+      value: -1.9216921
       objectReference: {fileID: 0}
     - target: {fileID: 3881361109480283365, guid: 4573fc9ff1128794f87b720ea01952a6, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1015,15 +1016,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1732645873071041319, guid: 96f4d22528f1b854a8cb5c25a2536bb0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.023100376
+      value: 0.023100318
       objectReference: {fileID: 0}
     - target: {fileID: 1732645873071041319, guid: 96f4d22528f1b854a8cb5c25a2536bb0, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.553
+      value: 1.5529785
       objectReference: {fileID: 0}
     - target: {fileID: 1732645873071041319, guid: 96f4d22528f1b854a8cb5c25a2536bb0, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.6513002
+      value: 0.6513062
       objectReference: {fileID: 0}
     - target: {fileID: 1732645873071041319, guid: 96f4d22528f1b854a8cb5c25a2536bb0, type: 3}
       propertyPath: m_LocalRotation.w

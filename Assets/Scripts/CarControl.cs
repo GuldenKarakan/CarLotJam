@@ -8,15 +8,16 @@ public class CarControl : MonoBehaviour
 {
     [HideInInspector] public Transform door;
     [HideInInspector] public int cordinat;
+    [HideInInspector] public bool getOn = false;
+    [SerializeField] private LayerMask layer;
 
     public Point[] point = new Point[2];
     public CustomColor color;
     public Transform animPos;
-    public ParticleSystem happy;
 
-    [SerializeField] private ParticleSystem smoke;
-    [SerializeField] private LayerMask layer;
     [SerializeField] private Transform body;
+    [SerializeField] private ParticleSystem smoke;
+    public ParticleSystem happy;
     [SerializeField] private Material outLine;
 
     private Vector3 selectedPoint;
@@ -33,7 +34,7 @@ public class CarControl : MonoBehaviour
     private void Start()
     {
         grid = Grids.instance;
-        bodyMaterial = body.GetComponent<MeshRenderer>();
+        bodyMaterial = body.GetChild(2).GetComponent<MeshRenderer>();
         MeshRenderer renderer;
         smoke.Stop();
         foreach (Transform child in transform.GetChild(0))
@@ -47,6 +48,9 @@ public class CarControl : MonoBehaviour
     {
         if (!isMove)
         {
+            if (!getOn)
+                return;
+
             RaycastHit front, back;
             Physics.Raycast(transform.position, transform.forward, out front, 15, layer);
             Physics.Raycast(transform.position, -transform.forward, out back, 15, layer);
@@ -109,14 +113,15 @@ public class CarControl : MonoBehaviour
 
         switch (animIndex)
         {
-            case 1:
-                door.DOLocalRotate(new Vector3(0, 70, 0) * cordinat, .4f).SetEase(Ease.Linear).OnComplete(() => door.DOLocalRotate(Vector3.zero, .5f).SetEase(Ease.Linear));
+            case 1:// araba kapýsýnýn açýlýp kapanmasý
+                door.DOLocalRotate(new Vector3(0, 70, 0) * cordinat, .3f).SetEase(Ease.Linear).OnComplete(() => door.DOLocalRotate(Vector3.zero, .5f).SetEase(Ease.Linear));
                 break;
-            case 2:
-                body.DOLocalRotate(new Vector3(0, 0, 18) * cordinat, .4f).SetEase(Ease.Linear).OnComplete(() => body.DOLocalRotate(Vector3.zero, .4f).SetEase(Ease.Linear));
+            case 2://arabaya binerken arabanýn eðilmesi
+                body.DOLocalRotate(new Vector3(0, 0, 3) * cordinat, .3f).SetEase(Ease.Linear).OnComplete(() => body.DOLocalRotate(Vector3.zero, .4f).SetEase(Ease.Linear));
                 break;
-            case 3:
-                body.DOShakePosition(.2f, .03f).SetEase(Ease.Linear).SetLoops(-1);
+            case 3://çalýþma animasyonu
+                body.DOShakePosition(.25f, .08f).SetEase(Ease.Linear).SetLoops(-1, LoopType.Yoyo);
+                smoke.Play();
                 break;
             default:
                 break;
@@ -169,9 +174,14 @@ public class CarControl : MonoBehaviour
 
     private void Rotate(GameObject takenRoad)
     {
-        Vector3 rotation = transform.rotation.eulerAngles + new Vector3(0, 90, 0) * value;
-        transform.DOLocalRotate(rotation, .1f).SetEase(Ease.Linear);
-        //value = 1;
+        Route r = takenRoad.GetComponent<Route>();
+        Vector3 rotation = transform.rotation.eulerAngles + new Vector3(0, 90, 0) * r.rotMultiplier * value;
+        transform.DORotate(rotation, .1f).SetEase(Ease.Linear).OnComplete(() =>
+        {
+            value = 1;
+        });
+
+        value = 0;
         roads.Add(takenRoad);
     }
     private void OnTriggerEnter(Collider other)
@@ -181,6 +191,7 @@ public class CarControl : MonoBehaviour
             if (other.gameObject.layer == 10)
                 Rotate(other.gameObject);
         }
+
         else
         {
             bool isTakenRoad = false;

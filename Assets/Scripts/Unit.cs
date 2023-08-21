@@ -54,7 +54,6 @@ public class Unit : MonoBehaviour
                 if (carControl != null && carControl.color.colorName == player.color.colorName)
                 {
                     carControl.CarPoint(player.gameObject, (x) => RequestPath(x));
-                    player.happy.Play();
                     StartCoroutine(carControl.OutlineAdd());
                 }
             }
@@ -86,10 +85,9 @@ public class Unit : MonoBehaviour
 
         }
         else
-        
-        if (target != null)
         {
-            floor.ChangeColor(Color.red);
+            if (target != null)
+                floor.ChangeColor(Color.red);
             player.angry.Play();
         }
     }
@@ -117,14 +115,19 @@ public class Unit : MonoBehaviour
                         player.GetComponent<Collider>().enabled = false;
                         carControl.PlayAnim(1);
                         yield return new WaitForSeconds(.1f);
-                        player.anim.SetTrigger("openDoor");
+                        player.anim.SetTrigger("openDoor");//karakter kapýyý açmak için hareket yapar
                         carControl.PlayAnim(2);
                         player.PlayAnim(carControl.animPos);
+                        yield return new WaitForSeconds(.3f);
+                        carControl.PlayAnim(3);
+                        //yield return new WaitForSeconds(.1f);
+                        carControl.getOn = true;
                     }
                     else
                         yield return new WaitForSeconds(.2f);
                     // Yolun sonuna gelindi, döngüyü sonlandýr
                     player.gameObject.layer = 6;
+                    player.anim.SetTrigger("idle");
                     player = null;
                     GetComponent<Grids>().CreatGrid();
                     yield break;

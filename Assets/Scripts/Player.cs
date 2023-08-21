@@ -22,7 +22,7 @@ public class Player : MonoBehaviour
     {
         transform.LookAt(target);
         transform.DOMove(target.position, .8f).OnComplete(() => transform.parent = target);
-        transform.DOScale(Vector3.zero, 2f);
+        transform.DOScale(Vector3.zero, 1f);
     }
 
     public IEnumerator OutlineAdd()
