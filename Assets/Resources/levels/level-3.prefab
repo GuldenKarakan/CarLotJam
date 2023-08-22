@@ -353,7 +353,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isFinish: 0
-  carCount: 4
+  carCount: 3
 --- !u!1 &5134831962449553028
 GameObject:
   m_ObjectHideFlags: 0
