@@ -152,7 +152,6 @@ public class CarControl : MonoBehaviour
     {
         if(isSucces)
         {
-            Debug.Log(path.Length);
             if(selectedPathLength > path.Length)
             {
                     selectedPoint = path[path.Length - 1];

@@ -7,69 +7,69 @@ using System.Diagnostics;
 public class PathFinding : MonoBehaviour
 {
     [HideInInspector] public bool pathSuccess = false;
-    PathRequestManager requestManager; // Yol isteklerini yöneten sýnýf
-    Grids grid; // Yol gridini temsil eden sýnýf
+    PathRequestManager requestManager; 
+    Grids grid; 
 
     private void Awake()
     {
-        requestManager = GetComponent<PathRequestManager>(); // Yol istek yöneticisini al
-        grid = GetComponent<Grids>(); // Yol gridini al
+        requestManager = GetComponent<PathRequestManager>(); 
+        grid = GetComponent<Grids>();
     }
     public void StartFinfPath(Vector3 startPos, Vector3 targetPos)
     {
-        StartCoroutine(FindPath(startPos, targetPos)); // Yol hesaplamasýný baþlatan metot
+        StartCoroutine(FindPath(startPos, targetPos)); 
     }
     IEnumerator FindPath(Vector3 startPos, Vector3 targetPos)
     {
         grid.ResetGrid();
 
-        Vector3[] waypoints = new Vector3[0]; // Yol üzerindeki waypointler
-        pathSuccess = false; // Yol hesaplama baþarýlý mý?
+        Vector3[] waypoints = new Vector3[0];  
+        pathSuccess = false;  
 
-        Node startNode = grid.NodeFromWorldPoint(startPos); // Baþlangýç düðümünü al
-        Node targetNode = grid.NodeFromWorldPoint(targetPos); // Hedef düðümünü al
+        Node startNode = grid.NodeFromWorldPoint(startPos);
+        Node targetNode = grid.NodeFromWorldPoint(targetPos);  
 
         if (startNode.walkable && targetNode.walkable)
         {
-            Heap<Node> openSet = new Heap<Node>(grid.MaxSize); // Açýk kümeyi temsil eden Heap veri yapýsý
-            HashSet<Node> closedSet = new HashSet<Node>(); // Kapalý kümeyi temsil eden Hash Set
+            Heap<Node> openSet = new Heap<Node>(grid.MaxSize);
+            HashSet<Node> closedSet = new HashSet<Node>();
 
-            openSet.Add(startNode); // Baþlangýç düðümünü açýk kümeye ekle
+            openSet.Add(startNode);
 
             while (openSet.Count > 0)
             {
-                Node currentNode = openSet.RemoveFirst(); // Açýk kümeyi en düþük maliyetli düðümü alarak güncelle
-                closedSet.Add(currentNode); // Seçilen düðümü kapalý küme olarak iþaretle
+                Node currentNode = openSet.RemoveFirst();
+                closedSet.Add(currentNode);
 
-                if (currentNode == targetNode) // Hedef düðüme ulaþýldý mý?
+                if (currentNode == targetNode)
                 {
-                    pathSuccess = true; // Yol hesaplama baþarýlý
-                    break; // Döngüyü sonlandýr
+                    pathSuccess = true;
+                    break; 
                 }
 
-                foreach (Node neighbour in grid.GetNeighbours(currentNode)) // Her komþu düðüm için
+                foreach (Node neighbour in grid.GetNeighbours(currentNode))
                 {
-                    if (!neighbour.walkable || closedSet.Contains(neighbour)) // Geçersiz veya kapalý düðümse atla
+                    if (!neighbour.walkable || closedSet.Contains(neighbour))
                         continue;
 
-                    int newMovementCostToNeighbour = currentNode.gCost + GetDistance(currentNode, neighbour); // Yeni maliyeti hesapla
+                    int newMovementCostToNeighbour = currentNode.gCost + GetDistance(currentNode, neighbour);
 
-                    if (newMovementCostToNeighbour < neighbour.gCost || !openSet.Contains(neighbour)) // Eðer yeni maliyet daha düþükse veya komþu açýk kümede deðilse
+                    if (newMovementCostToNeighbour < neighbour.gCost || !openSet.Contains(neighbour))
                     {
-                        neighbour.gCost = newMovementCostToNeighbour; // Yeni maliyeti güncelle
-                        neighbour.hCost = GetDistance(neighbour, targetNode); // Hedef maliyeti güncelle
-                        neighbour.parent = currentNode; // Komþu düðümün ebeveynini güncelle
-                        if (!openSet.Contains(neighbour)) // Eðer komþu açýk kümede deðilse
-                            openSet.Add(neighbour); // Komþuyu açýk kümeye ekle
+                        neighbour.gCost = newMovementCostToNeighbour; 
+                        neighbour.hCost = GetDistance(neighbour, targetNode);
+                        neighbour.parent = currentNode; 
+                        if (!openSet.Contains(neighbour))
+                            openSet.Add(neighbour);
                     }
 
                 }
             }
         }
-        yield return null; // Ýterasyon sonunda bir frame beklemek için
+        yield return null; 
         if (pathSuccess)
-            waypoints = RetracePath(startNode, targetNode); // Yolun waypointlerini oluþtur
-        requestManager.FinishProcessingPath(waypoints, pathSuccess); // Yol hesaplama sonucunu yol istek yöneticisine bildir
+            waypoints = RetracePath(startNode, targetNode); 
+        requestManager.FinishProcessingPath(waypoints, pathSuccess);
     }
 
     // Yolu geriye dönerek oluþturan metot
@@ -80,14 +80,14 @@ public class PathFinding : MonoBehaviour
 
         while (currentNode != startNode)
         {
-            path.Add(currentNode); // Düðümü yola ekle
-            currentNode = currentNode.parent; // Bir önceki düðüme geç
+            path.Add(currentNode); 
+            currentNode = currentNode.parent;
             
         }
         path.Add(startNode);
-        Vector3[] waypoints = SimplifyPath(path); // Yolu basitleþtir
-        Array.Reverse(waypoints); // Yolu ters çevir
-        return waypoints; // Waypointleri döndür
+        Vector3[] waypoints = SimplifyPath(path);
+        Array.Reverse(waypoints);
+        return waypoints;
     }
 
     // Yolu basitleþtiren metot
@@ -97,10 +97,10 @@ public class PathFinding : MonoBehaviour
 
         for (int i = 0; i < path.Count; i++)
         {
-            waypoints.Add(path[i].worldPosition); // Yeni bir yönde ise waypointi ekle
+            waypoints.Add(path[i].worldPosition);
         }
 
-        return waypoints.ToArray(); // Waypointleri dizi olarak döndür
+        return waypoints.ToArray();
     }
 
     // Ýki düðüm arasýndaki mesafeyi hesaplayan metot

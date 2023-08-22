@@ -11,8 +11,8 @@ public class Unit : MonoBehaviour
     private Floor floor;
     private CarControl carControl;
 
-    private Vector3[] path; // Yol noktalarýný içeren dizi
-    private int targetIndex; // Hedef yol noktasýnýn dizinini tutan deðiþken
+    private Vector3[] path;
+    private int targetIndex;
 
     private IEnumerator currentPath;
     private void Update()
@@ -97,19 +97,14 @@ public class Unit : MonoBehaviour
     // Yolu takip eden iþlemi gerçekleþtiren IEnumerator metodu
     IEnumerator FollowPath()
     {
-        // Baþlangýçta, birim nesne ilk yol noktasýna hareket etmeye baþlar
         Vector3 currentWaypoint = path[0];
 
-        // Sonsuz bir döngü baþlatýlýr, çünkü birim nesne hedefe vardýðýnda döngü sonlanacak
         while (true)
         {
-            // Eðer birim nesne þu anki yol noktasýna vardýysa
             if (player.transform.position == currentWaypoint)
             {
-                // Hedef yol noktasýnýn dizinini artýr
                 targetIndex++;
 
-                // Eðer hedef dizini yol noktalarý dizininin boyutuna ulaþtýysa
                 if (targetIndex >= path.Length)
                 {
                     if (carControl != null)
@@ -122,12 +117,11 @@ public class Unit : MonoBehaviour
                         player.PlayAnim(carControl.animPos);
                         yield return new WaitForSeconds(.3f);
                         carControl.PlayAnim(3);
-                        //yield return new WaitForSeconds(.1f);
                         carControl.getOn = true;
                     }
                     else
                         yield return new WaitForSeconds(.2f);
-                    // Yolun sonuna gelindi, döngüyü sonlandýr
+
                     player.gameObject.layer = 6;
                     player.anim.SetTrigger("idle");
                     player = null;
@@ -141,11 +135,8 @@ public class Unit : MonoBehaviour
 
             // Birim nesneyi doðru yöne hareket ettir
             player.transform.position = Vector3.MoveTowards(player.transform.position, currentWaypoint, speed * Time.deltaTime);
-            //Quaternion targetRotation = Quaternion.LookRotation(currentWaypoint - player.transform.position);
-            //player.transform.rotation = Quaternion.Slerp(player.transform.rotation, targetRotation, speed *2f * Time.deltaTime);
             player.transform.LookAt(currentWaypoint);
 
-            // Bir sonraki frame'e geçmeden önce bekle
             yield return null;
         }
     }

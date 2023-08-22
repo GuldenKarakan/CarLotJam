@@ -14,20 +14,11 @@ public class Floor : MonoBehaviour
     }
     public void ChangeColor(Color color)
     {
-        //if (gameObject.layer != 7)
+        material.DOColor(color, .4f).SetEase(Ease.OutBounce).OnComplete(() =>
         {
-            material.DOColor(color, .4f).SetEase(Ease.OutBounce).OnComplete(() =>
-            {
-                material.DOColor(originalColor, .4f).SetEase(Ease.InBounce);
-            });
-        }
+            material.DOColor(originalColor, .4f).SetEase(Ease.InBounce);
+        });
     }
-
-    private void OnMouseDown()
-    {
-        //gameObject.layer = Physics.CheckSphere(transform.position, 1f, 8) ? 7 : 9;
-    }
-
     private void OnDestroy()
     {
         transform.DOKill();

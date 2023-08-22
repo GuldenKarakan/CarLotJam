@@ -5,11 +5,9 @@ using System;
 // Öncelikli kuyruk yapýsýný tanýmlayan sýnýf
 public class Heap<T> where T : IHeapItem<T>
 {
-    // Öðelerin saklandýðý dizi ve öðe sayýsýný tutan deðiþken
     T[] items;
     int currentItemCount;
 
-    // Constructor - Maksimum öðe sayýsý belirlenir ve dizi oluþturulur
     public Heap(int maxHeapSize)
     {
         items = new T[maxHeapSize];
@@ -18,30 +16,19 @@ public class Heap<T> where T : IHeapItem<T>
     // Öðe ekleme metodu
     public void Add(T item)
     {
-        // Öðenin kendi HeapIndex deðeri ayarlanýr
         item.HeapIndex = currentItemCount;
-        // Öðe diziyi ilgili indekse eklenir
         items[currentItemCount] = item;
-        // Yeni öðeyi yukarý doðru sýralama iþlemi yapýlýr
         SortUp(item);
-        // Öðe sayýsý artýrýlýr
         currentItemCount++;
     }
 
-    // Ýlk öðeyi çýkarma metodu
     public T RemoveFirst()
     {
-        // Ýlk öðe alýnýr
         T firstItem = items[0];
-        // Öðe sayýsý azaltýlýr
         currentItemCount--;
-        // Son öðe ilk öðe olarak taþýnýr
         items[0] = items[currentItemCount];
-        // Taþýnan öðenin HeapIndex deðeri güncellenir
         items[0].HeapIndex = 0;
-        // Öðeyi aþaðý doðru sýralama iþlemi yapýlýr
         SortDown(items[0]);
-        // Ýlk öðe döndürülür
         return firstItem;
     }
 
@@ -59,7 +46,6 @@ public class Heap<T> where T : IHeapItem<T>
     }
     public bool Contains(T item)
     {
-        // Ýlgili öðenin HeapIndex deðeri kullanýlarak kontrol yapýlýr
         return Equals(items[item.HeapIndex], item);
     }
 

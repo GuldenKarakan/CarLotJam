@@ -6,43 +6,35 @@ using System;
 // Yol isteklerini yöneten sýnýf
 public class PathRequestManager : MonoBehaviour
 {
-    [HideInInspector] public PathFinding pathFinding; // Yol bulma iþlemlerini gerçekleþtiren sýnýf
-    // Yol isteklerinin sýrasýný tutan kuyruk
+    [HideInInspector] public PathFinding pathFinding;
     Queue<PathRequest> pathRequestQueue = new Queue<PathRequest>();
-    PathRequest currentPathRequest;// Þu anki yol isteði
+    PathRequest currentPathRequest;
 
-    public static PathRequestManager instance; // Yol istek yöneticisi örneði
+    public static PathRequestManager instance;
 
-    bool isProcessingPath; // Bir yol iþleme sürecinin devam edip etmediðini belirten flag
+    bool isProcessingPath;
 
     private void Awake()
     {
         instance = this;
-        pathFinding = GetComponent<PathFinding>(); // Yol bulma bileþenini al
+        pathFinding = GetComponent<PathFinding>();
     }
 
     // Dýþarýdan yol isteði yapýlabilen metot
     public static void RequestPath(Vector3 pathStart, Vector3 pathEnd, Action<Vector3[], bool> callback)
     {
-        // Yeni bir yol isteði oluþturulur
         PathRequest newRequest = new PathRequest(pathStart, pathEnd, callback);
-        // Yol isteði kuyruða eklenir
         instance.pathRequestQueue.Enqueue(newRequest);
-        // Þu anki iþlemi deneyerek bir sonraki yol isteðini iþlemeye çalýþ
         instance.TryProcessNext();
     }
 
     // Bir sonraki yol isteðini iþlemeye çalýþan metot
     void TryProcessNext()
     {
-        // Eðer þu an bir yol iþlemesi yoksa ve yol isteði kuyruðu boþ deðilse
         if (!isProcessingPath && pathRequestQueue.Count > 0)
         {
-            // Þu anki yol isteðini al
             currentPathRequest = pathRequestQueue.Dequeue();
-            // Yol iþlemesi devam ediyor olarak iþaretle
             isProcessingPath = true;
-            // Yol bulma iþlemine baþla
             pathFinding.StartFinfPath(currentPathRequest.pathStart, currentPathRequest.pathEnd);
         }
     }
@@ -52,17 +44,15 @@ public class PathRequestManager : MonoBehaviour
     {
         currentPathRequest.callback(path, success);
         isProcessingPath = false;
-        // Bir sonraki yol isteðini iþlemeye çalýþ
         TryProcessNext();
     }
-    // Yol isteði yapýsý
+
     struct PathRequest
     {
-        public Vector3 pathStart; // Yolun baþlangýç noktasý
-        public Vector3 pathEnd; // Yolun hedef noktasý
-        public Action<Vector3[], bool> callback; // Yol hesaplamasý tamamlandýðýnda çaðrýlacak fonksiyon
+        public Vector3 pathStart;
+        public Vector3 pathEnd;
+        public Action<Vector3[], bool> callback;
 
-        // Constructor
         public PathRequest(Vector3 _start, Vector3 _end, Action<Vector3[], bool> _calback)
         {
             pathStart = _start;

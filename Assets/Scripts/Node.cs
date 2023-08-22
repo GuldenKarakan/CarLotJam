@@ -5,16 +5,16 @@ using UnityEngine;
 // Node sýnýfýný IHeapItem arayüzü ile birleþtiren ve temel düðüm yapýsýný tanýmlayan sýnýf
 public class Node : IHeapItem<Node>
 {
-    public bool walkable; // Bu düðümün yürünebilir olup olmadýðýný belirten boolean deðer
-    public Vector3 worldPosition; // Düðümün dünya koordinatlarý
-    public int gridX; // Izgarada düðümün X koordinatý
-    public int gridY; // Izgarada düðümün Y koordinatý
+    public bool walkable;
+    public Vector3 worldPosition;
+    public int gridX;
+    public int gridY;
 
-    public int gCost; // Baþlangýç düðümünden bu düðüme olan gerçek maliyet
-    public int hCost; // Bu düðümden hedef düðüme olan tahmini maliyet
-    public Node parent; // Bu düðümün önceki düðümü (yolu takip etmek için)
+    public int gCost;
+    public int hCost;
+    public Node parent;
 
-    int heapIndex; // Öncelikli kuyruk yapýsýnda dizin tutmak için kullanýlýr
+    int heapIndex;
 
     // Constructor - Düðüm özellikleri atanýr
     public Node(bool _walkable, Vector3 _worldPos, int _gridX, int _gridY)
@@ -46,6 +46,6 @@ public class Node : IHeapItem<Node>
         {
             compare = hCost.CompareTo(nodeToCompare.hCost);
         }
-        return -compare;// Öncelikli kuyruðun en yüksek öncelikli öðesinin en üstte olmasý için ters sýralama yapýlýr
+        return -compare;
     }
 }

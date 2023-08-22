@@ -33,18 +33,14 @@ public class Grids : MonoBehaviour
     {
         ClearGrid();
 
-        // Ýzgaranýn dünya boyutlarýný hesapla
         gridWorldSize = new Vector2(gridAxisX, gridAxisY) * 2;
         nodeDiameter = nodeRadius * 2;
 
-        // Izgara boyutlarýný düðüm çapýna göre hesapla
         gridSizeX = Mathf.RoundToInt(gridWorldSize.x / nodeDiameter);
         gridSizeY = Mathf.RoundToInt(gridWorldSize.y / nodeDiameter);
 
-        // Izgara düðümleri dizisini oluþtur
         grid = new Node[gridSizeX, gridSizeY];
 
-        // Izgaranýn sol alt köþesini hesapla
         Vector3 worldBottomLeft = transform.position - Vector3.right * gridWorldSize.x / 2 - Vector3.forward * gridWorldSize.y / 2;
 
         // Her bir düðümü oluþtur ve düðümün yürünülebilirlik durumunu kontrol et
@@ -52,12 +48,9 @@ public class Grids : MonoBehaviour
         {
             for (int j = 0; j < gridSizeY; j++)
             {
-                // Düðümün dünya konumunu hesapla
                 Vector3 worldPoint = worldBottomLeft + Vector3.right * (i * nodeDiameter + nodeRadius) + Vector3.forward * (j * nodeDiameter + nodeRadius);
 
-                // Düðümün üzerinde engel var mý kontrol et
                 bool walkable = !(Physics.CheckSphere(worldPoint, nodeRadius, unwalkableMask));
-                // Düðümü oluþtur ve izgara dizisine ekle
                 grid[i, j] = new Node(walkable, worldPoint, i, j);
                 GameObject floor = Instantiate(gridObject, worldPoint, Quaternion.identity, transform);
                 floor.layer = walkable ? 9 : 7;
@@ -110,17 +103,14 @@ public class Grids : MonoBehaviour
 
     public Node NodeFromWorldPoint(Vector3 worldPosition)
     {
-        // Dünya koordinatlarýný izgara içindeki koordinatlara dönüþtür
         float percentX = (worldPosition.x + gridWorldSize.x / 2) / gridWorldSize.x;
         float percentY = (worldPosition.z + gridWorldSize.y / 2) / gridWorldSize.y;
         percentX = Mathf.Clamp01(percentX);
         percentY = Mathf.Clamp01(percentY);
 
-        // Düðüm dizinlerini hesapla
         int x = Mathf.RoundToInt((gridSizeX - 1) * percentX);
         int y = Mathf.RoundToInt((gridSizeY - 1) * percentY);
 
-        // Ýlgili düðümü döndür
         return grid[x, y];
     }
 
