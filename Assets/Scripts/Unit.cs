@@ -83,6 +83,7 @@ public class Unit : MonoBehaviour
                 player.anim.SetTrigger("run"); 
                 player.happy.Play();
             }
+            
 
         }
         else

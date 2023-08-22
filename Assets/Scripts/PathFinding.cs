@@ -81,11 +81,10 @@ public class PathFinding : MonoBehaviour
         while (currentNode != startNode)
         {
             path.Add(currentNode); // Düðümü yola ekle
-            if(currentNode.parent == null)
-            UnityEngine.Debug.Log("c: " + currentNode.worldPosition);
             currentNode = currentNode.parent; // Bir önceki düðüme geç
             
         }
+        path.Add(startNode);
         Vector3[] waypoints = SimplifyPath(path); // Yolu basitleþtir
         Array.Reverse(waypoints); // Yolu ters çevir
         return waypoints; // Waypointleri döndür

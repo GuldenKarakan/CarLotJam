@@ -6,7 +6,7 @@ public class CameraControl : MonoBehaviour
 {
     [SerializeField] private Transform camPos1;
     [SerializeField] private Transform camPos2;
-    private Camera cam;
+    public Camera cam { get; private set; }
 
     public static CameraControl instance;
 
